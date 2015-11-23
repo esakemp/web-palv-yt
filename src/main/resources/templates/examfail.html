@@ -1,0 +1,20 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Course Exams</title>
+        <meta charset="UTF-8" />
+
+        <link href="../../webapp/static/css/style.css" th:href="@{/static/css/style.css}" rel="stylesheet" type="text/css" />
+        <link href="../../webapp/static/css/style.css" th:href="@{/static/css/style.css?{now}(now = ${#dates.createNow()})}" rel="stylesheet" type="text/css" />
+
+
+        <script src="../../static/script/jquery-1.11.3.min.js" th:src="@{/static/script/jquery-1.11.3.min.js}"></script>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+    </head>
+    <body>
+        
+        <div th:include="fragments/form :: logout" id="logout"></div>
+        <div th:include="fragments/form :: insert" id="inputform"></div>
+        
+    </body>
+</html>

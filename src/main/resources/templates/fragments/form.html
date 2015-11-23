@@ -1,0 +1,199 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Course Exams</title>
+        <meta charset="UTF-8" />
+
+        <link href="../../webapp/static/css/style.css" th:href="@{/static/css/style.css}" rel="stylesheet" type="text/css" />
+        <script src="../../webapp/static/script/jquery-1.11.3.min.js" th:src="@{/static/script/jquery-1.11.3.min.js}"></script>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+    </head>
+    <body>
+        <div th:fragment="login">
+            <!-- Kirjautuminen -->
+            <form th:action="@{/login}" th:method="POST" sec:authorize="!hasRole('ROLE_ADMIN')">
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                <label for="user">Username:</label>
+                <input type="text" name="username" />
+                <label for="password">Password:</label>
+                <input type="password" name="password" />
+                <input type="submit" value="login" />
+
+            </form> 
+
+        </div>
+
+        <div th:fragment="logout">
+            <!-- Uloskirjaus -->
+            <form th:action="@{/logout}" th:method="POST" sec:authorize="hasRole('ROLE_ADMIN')">
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                <input type="submit" value="logout"/>
+            </form>
+        </div>
+
+        <div  th:fragment="addExam">
+            <!-- 'lisää koe'- button -->
+            <input type="button" onclick="showInputForm();" value="lisää koe" sec:authorize="hasRole('ROLE_ADMIN')" />
+        </div>
+
+        <div th:fragment="addCourse" >
+            <!-- 'lisää kurssi'- button -->
+            <input type="button" onclick="showCourseForm();" value="lisää kurssi" sec:authorize="hasRole('ROLE_ADMIN')" />
+        </div>
+
+        <div th:fragment="search">
+            <!-- Etsi -->
+            <form th:action="@{/exams/search}" th:method="POST">
+                <label for="search">Haku</label>
+                <input type="text" name="search" size="57" id="namesearch"/>
+                <input type="submit"  value="etsi" id="name-button"/>
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+            </form>
+        </div>
+
+        <div th:fragment="datesearch">
+            <!-- Etsi päivämäärällä -->
+            <form th:action="@{/exams/datesearch}" th:method="POST" th:object="${searchDates}">
+                <label for="start">Alku</label>
+                <input type="text" th:field="*{start}" size="17" />
+                <label for="end">Loppu</label>
+                <input type="text" th:field="*{end}" size="17" />
+                <span th:text="${#fields.hasErrors('*')}? 'Tarkista ajan muoto (dd.mm.yyyy)' : 'dd.mm.yyyy'">fail</span>
+
+
+                <input type="submit"  value="etsi" />
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+            </form>
+        </div>
+
+
+        <div th:fragment="addCourseForm" >
+            <h4>Lisää kurssi</h4>
+            <!-- Lisää kurssi -->
+            <form th:action="@{/courses}" th:method="POST" th:object="${course}">
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                <span class="block">
+                    <label for="code">Kurssikoodi</label>
+                    <input th:field="*{code}" type="text" />
+                    <span th:if="${#fields.hasErrors('code')}" th:errors="*{code}"></span>
+
+                </span>
+
+                <span class="block">
+                    <label for="name">Nimi</label>
+                    <input th:field="*{name}" type="text" size="50" />
+                    <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
+                </span>
+                <span class="block">
+                    <label for="courseType">Tyyppi</label>
+                    <select name="courseType">
+                        <option th:each="coursetype : ${coursetypes}" th:text="${coursetype.name}" th:value="${coursetype}" ></option>
+                    </select>
+                </span>
+                <span class="block">
+                    <label for="submit">Lisää</label>
+                    <input type="submit" value="ok" />
+                </span>
+                <span class="block">
+                    <label></label>
+                    <a href="#" th:href="@{/exams}">Peruuta</a>
+                </span>
+            </form>
+        </div>
+
+        <div th:fragment="insert">
+            <!-- Lisäyslomake -->
+            <h4>Lisää koe</h4>
+            <form th:method="PUT" th:object="${exam}" action="/exams" >
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                <!-- Kokeet -->
+                <span class="block">
+                    <label for="location">Sijainti</label>
+                    <input type="text" th:field="*{location}" />
+                    <span th:if="${#fields.hasErrors('location')}" th:errors="*{location}"></span>
+                </span>
+
+                <span class="block">
+                    <label for="date">Aika</label>
+                    <input type="text" th:field="*{examDate}" />
+                    <span th:text="${#fields.hasErrors('examDate')}? 
+                          'Tarkista ajan muoto (dd.mm.yyyy hh:mm)' : 'dd.mm.yyyy hh:mm'">fail</span>
+
+                </span>
+                <span class="block">
+                    <label for="examType">Tyyppi</label>
+                    <select name="examType">
+                        <option th:each="examtype : ${examtypes}" th:text="${examtype.name}" th:value="${examtype}" ></option>
+                    </select>
+                    <span th:if="${#fields.hasErrors('examType')}" th:errors="*{examType}"></span>
+                </span>
+                <span class="block">
+                    <label for="requiresAassignment">Vaatii harjoitustyön</label>
+                    <input type="checkbox" name="requiresAssignment" />
+                    <span th:if="${#fields.hasErrors('requiresAssignment')}" th:errors="*{requiresAssignment}"></span>
+                </span>
+                <span class="block">
+                    <label for="examiner">Kuulustelija</label>
+                    <input type="text" name="examiner" />
+                    <span th:if="${#fields.hasErrors('examiner')}" th:errors="*{examiner}"></span>
+                </span>
+
+                <!--  Kurssi  -->
+                <span class="block">
+                    <label for="course">Kurssi</label>
+                    <select name="course">
+                        <option th:each="course : ${courses}" th:text="${course.code + ' ' + course.name}" th:value="${course.id}" ></option>
+                    </select>
+                    <span th:if="${#fields.hasErrors('course')}" th:errors="*{course}"></span>
+                </span>
+                <span class="block">
+                    <label for="submit">Lähetä</label>
+                    <input name="submit" type="submit" value="Ok" />
+                </span>
+                <span class="block">
+                    <label></label>
+                    <a href="#" th:href="@{/exams}">Peruuta</a>
+                </span>
+                <script th:if="${#fields.hasErrors('*')}">
+                    $(document).ready(function () {
+                        showInputForm();
+                    });
+                </script>
+            </form>
+        </div>
+        <!-- / Lisäyslomake -->
+
+        <div th:fragment='exams'>
+            <!-- Koelista -->
+            <table class="examtable">
+                <caption>Kokeet</caption>
+                <tr>
+                    <td>Päivämäärä</td>
+                    <td>Kurssikoodi</td>
+                    <td>Kurssi</td>
+                    <td>Taso</td>
+                    <td>Tyyppi</td>
+                    <td></td>
+
+                </tr>
+                <tr th:each="exam : ${exams}">
+
+
+                    <td th:text="${#calendars.format(exam.examDate,'dd.MM.yyyy hh:mm')}">date</td>
+                    <td th:text="${exam.course.code}">coursecode</td>
+                    <td th:text="${exam.course.name}">coursename</td>
+                    <td th:text="${exam.course.courseType.name}">coursetype</td>
+                    <td th:text="${exam.examType.name}">examtype</td>
+                    <td><a href="#" th:href="@{/exams/{examid}(examid=${exam.id})}">Tiedot</a></td>
+                    <td><form sec:authorize="hasRole('ROLE_ADMIN')" th:method="DELETE" th:action="@{/exams/{examid}(examid=${exam.id})}">
+                            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                            <input type="submit" value="Poista" />
+                        </form>
+                    </td>
+                </tr>
+
+            </table>
+        </div>
+    </body>
+
+</html>

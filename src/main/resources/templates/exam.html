@@ -1,0 +1,77 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Course Exams</title>
+        <meta charset="UTF-8" />
+
+        <link href="../../webapp/static/css/style.css" th:href="@{/static/css/style.css}" rel="stylesheet" type="text/css" />
+        <link href="../../webapp/static/css/style.css" th:href="@{/static/css/style.css?{now}(now = ${#dates.createNow()})}" rel="stylesheet" type="text/css" />
+
+
+        <script src="../../static/script/jquery-1.11.3.min.js" th:src="@{/static/script/jquery-1.11.3.min.js}"></script>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+    </head>
+    <body>
+        <script th:inlisne="javascript">
+            $(document).ready(function () {
+                console.log("hi");
+                $('#inputform').hide();
+                $('#addCourseForm').hide();
+            });
+            function showInputForm() {
+                $('#inputform').show();
+                $('#addCourseForm').hide();
+            }
+            function showCourseForm() {
+                $('#inputform').hide();
+                $('#addCourseForm').show();
+            }
+        </script>
+
+        <div th:include="fragments/form :: search" id="search"></div>
+        <div th:include="fragments/form :: datesearch"  id="datesearch"></div>
+
+        <div th:include="fragments/form :: logout" id="logout"></div>
+        <div th:include="fragments/form :: login" id="login"></div>
+
+        <div th:include="fragments/form :: addExam" id="addExam"></div>
+        <div th:include="fragments/form :: addCourse" id="addCourse"></div>
+
+        <div th:include="fragments/form :: addCourseForm" id="addCourseForm"></div>
+        <div th:include="fragments/form :: insert" id="inputform"></div>
+
+        <table class="examtable">
+            <caption>Kokeet</caption>
+            <tr>
+                <td>Päivämäärä</td>
+                <td>Sijainti</td>
+                <td>Kurssikoodi</td>
+                <td>Kurssi</td>
+                <td>Taso</td>
+                <td>Tyyppi</td>
+                <td>Harjoitustyö</td>
+                <td>Kuulustelija</td>
+                <td></td>
+
+            </tr>
+            <tr>
+                <td th:text="${#calendars.format(exam.examDate,'dd.MM.yyyy hh:mm')}">date</td>
+                <td th:text="${exam.location}">location</td>
+                <td th:text="${exam.course.code}">coursecode</td>
+                <td th:text="${exam.course.name}">coursename</td>
+                <td th:text="${exam.course.courseType.name}">coursetype</td>
+                <td th:text="${exam.examType.name}">examtype</td>
+                <td th:text="${exam.requiresAssignment} ? 'Vaaditaan' ">assignment</td>
+                <td th:text="${exam.examiner}">examiner</td>
+                <td><a href="#" th:href="@{/exams}">Takaisin</a></td>
+                <td><form sec:authorize="hasRole('ROLE_USER')" th:method="DELETE" th:action="@{/exams/{examid}(examid=${exam.id})}">
+                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                        <input type="submit" value="Poista" />
+                    </form>
+                </td>
+            </tr>
+
+        </table>        
+
+    </body>
+</html>

@@ -1,0 +1,99 @@
+
+body {
+    background-color:whitesmoke;
+    font-family: sans-serif;
+    font-size: large;
+}
+
+h3 {
+    clear:both;
+    padding-top: 20px;
+    text-align: center;
+}
+.examtable  {
+    border-radius: 10px;
+    background-color: white;
+    clear: both;
+    text-align: center;
+    width: 100%;
+    border: 3px solid black;
+    padding: 15px;
+
+}
+tr:first-child {
+    font-weight: bold;
+}
+.examtable td {
+
+    padding-left: 5px;
+    padding-right: 5px;
+    text-align: left;
+}
+#div-examtable {
+    width: 100%;
+    margin:auto;  
+}
+#inputform,
+#addCourseForm {
+    border-radius: 10px;
+    background-color: white;
+    clear:both;
+    float:left;
+    border: 3px solid black;
+    width: 50%;
+}
+#inputform label,
+#addCourseForm  label {
+    clear: both;
+    font-size:small;
+    margin-right: 3px;
+    display: inline-block;
+    width: 100px;
+    text-align: right;
+
+}
+#inputform .block,
+#addCourseForm .block {
+    padding: 5px;
+    display: block;
+}
+#inputform .block > span,
+#addCourseForm .block > span {
+    font-size: small;
+}
+
+#inputform submit,
+#addCourseForm submit {
+    text-align: center;
+}
+
+#logout {
+    float:left;
+    clear:none;
+    margin: 2px;
+}
+#addExam, #addCourse {
+    float: left;
+    clear:none;
+    margin: 2px;
+}
+#login {
+    float:left; 
+}
+#datesearch, #search{
+    border-radius: 5px;
+    background-color:white;
+    float:right;
+    clear:right;
+
+    padding: 5px;
+    margin: 3px;
+    border: 3px solid black;
+}
+#datesearch span {
+    font-size: small;
+    padding-left: 5px;
+}
+h4 {
+    text-align: center;
+}
