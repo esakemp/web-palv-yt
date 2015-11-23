@@ -77,7 +77,7 @@ public class ExamTest extends FluentTest {
         
         
         assertTrue(pageSource().contains("Java"));
-        assertFalse(pageSource().contains("Tietorakenteet"));
+        
         
         
         
