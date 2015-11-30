@@ -28,7 +28,7 @@ public class Exam extends AbstractPersistable<Long> {
     private String location;
     
     @Temporal(TemporalType.TIMESTAMP)
-    @DateTimeFormat(pattern = "dd.MM.yyyy hh:mm")
+    @DateTimeFormat(pattern = "dd.MM.yyyy HH:mm")
     @NotNull
     private Date examDate;
 

@@ -24,6 +24,7 @@ import wad.domain.SearchDates;
 import wad.service.CourseService;
 import wad.service.ExamService;
 
+
 @Controller
 @RequestMapping("/exams")
 public class ExamController {
@@ -33,6 +34,8 @@ public class ExamController {
 
     @Autowired
     private CourseService courseService;
+    
+    
 
     @ModelAttribute
     public Exam getExam() {
@@ -78,9 +81,9 @@ public class ExamController {
 
             return "examfail";
         }
-        exam = examService.save(exam);
+        examService.save(exam);
 
-        return "redirect:/exams/" + exam.getId();
+        return "redirect:/exams/";
     }
 
     @Secured("ROLE_ADMIN")
@@ -119,7 +122,7 @@ public class ExamController {
 
     @InitBinder
     protected void initBinder(WebDataBinder binder) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy hh:mm");
         binder.registerCustomEditor(Date.class, new CustomDateEditor(
                 dateFormat, false));
     }

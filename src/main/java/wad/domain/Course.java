@@ -2,6 +2,7 @@
 package wad.domain;
 
 import java.util.List;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
@@ -12,13 +13,17 @@ import org.springframework.format.annotation.NumberFormat;
 
 @Entity
 public class Course  extends AbstractPersistable<Long>{
+    @Column(unique = true)
     @NotBlank
     private String name;
     
-    @NumberFormat(style = NumberFormat.Style.NUMBER)
-    private int code;
+    @Column(unique = true)
+    
+    private String code;
+    
     @OneToMany(mappedBy = "course")
     private List<Exam> exams;
+    
     @NotNull
     private CourseType courseType;
 
@@ -39,11 +44,11 @@ public class Course  extends AbstractPersistable<Long>{
         this.name = name;
     }
 
-    public int getCode() {
+    public String getCode() {
         return code;
     }
 
-    public void setCode(int code) {
+    public void setCode(String code) {
         this.code = code;
     }
 

@@ -14,11 +14,11 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Entity
 public class SearchDates extends AbstractPersistable<Long>{
     @Temporal(TemporalType.TIMESTAMP)
-    @DateTimeFormat(pattern = "dd.MM.yyyy")
+    @DateTimeFormat(pattern = "dd.MM.yyyy HH:mm")
     @NotNull
     private Date start;
     @Temporal(TemporalType.TIMESTAMP)
-    @DateTimeFormat(pattern = "dd.MM.yyyy")
+    @DateTimeFormat(pattern = "dd.MM.yyyy HH:mm")
     @NotNull
     private Date end;
 

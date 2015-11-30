@@ -38,7 +38,7 @@ public class DefaultController {
         
         ArrayList<Course> courses = new ArrayList<>();
         Course course1 = new Course();
-        course1.setCode(582353);
+        course1.setCode("582353");
         course1.setName("Web-palvelinohjelmointi Java");
         
         course1.setCourseType(CourseType.Subject);
@@ -46,7 +46,7 @@ public class DefaultController {
         courses.add(course1);
         
         Course course2 = new Course();
-        course2.setCode(58131);
+        course2.setCode("58131");
         course2.setName("Tietorakenteet ja algoritmit");
         
         course2.setCourseType(CourseType.Subject);
@@ -54,13 +54,13 @@ public class DefaultController {
         courses.add(course2);
         
         Course course3 = new Course();
-        course3.setCode(582104);
+        course3.setCode("582104");
         course3.setName("Ohjelmistotekniikan menetelmät");
         
         course3.setCourseType(CourseType.Basic);
         courseRepository.save(course3);
         
-        SimpleDateFormat formatter = new SimpleDateFormat("dd.mm.yyyy HH:mm");
+        SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy HH:mm");
         
         Exam exam1 = new Exam();
         exam1.setCourse(courses.get(0));
