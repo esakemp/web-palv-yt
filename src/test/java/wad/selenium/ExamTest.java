@@ -82,4 +82,116 @@ public class ExamTest extends FluentTest {
         
         
     }
+    @Test
+    public void dateSearchWorking() {
+        goTo(getUrl());
+        WebDriver driver = getDefaultDriver();
+        
+        WebElement startdateField = driver.findElement(By.id("startDate"));
+        WebElement enddateField = driver.findElement(By.id("endDate"));
+        
+        startdateField.sendKeys("05.06.2016");
+        enddateField.sendKeys("07.06.2016");
+        
+        WebElement datesearch = driver.findElement(By.id("dateSearchButton"));
+        datesearch.submit();
+        assertTrue(pageSource().contains("Java"));
+        assertFalse(pageSource().contains("Tietorakenteet"));
+        
+    }
+    @Test
+    public void canLogin() {
+        goTo(getUrl());
+        WebDriver driver = getDefaultDriver();
+        
+        WebElement usernameField = driver.findElement(By.name("username"));
+        WebElement passwordField = driver.findElement(By.name("password"));
+        usernameField.sendKeys("admin");
+        passwordField.sendKeys("password");
+        
+        WebElement login = driver.findElement(By.id("login"));
+        login.submit();
+        assertFalse(pageSource().contains("Login with Username and Password"));
+    }
+    @Test
+    public void canAddExamWhileLoggedIn() {
+        goTo(getUrl());
+        WebDriver driver = getDefaultDriver();
+        
+        WebElement usernameField = driver.findElement(By.name("username"));
+        WebElement passwordField = driver.findElement(By.name("password"));
+        usernameField.sendKeys("admin");
+        passwordField.sendKeys("password");
+        
+        WebElement login = driver.findElement(By.id("login"));
+        login.submit();
+        
+        WebElement addExam = driver.findElement(By.id("addExam"));
+        addExam.click();
+        WebElement locationField = driver.findElement(By.name("location"));
+        WebElement examDateField = driver.findElement(By.name("examDate"));
+        locationField.sendKeys("A111");
+        examDateField.sendKeys("07.06.2016 12:00");
+        WebElement examinerField = driver.findElement(By.name("examiner"));
+        examinerField.sendKeys("Arto Vihavainen");
+        
+        WebElement addExamOk = driver.findElement(By.id("addExamOk"));
+        addExamOk.submit();
+        assertTrue(pageSource().contains("07.06.2016"));
+    }
+    @Test
+    public void canRemoveExamWhileLoggedIn() {
+        goTo(getUrl());
+        WebDriver driver = getDefaultDriver();
+        
+        WebElement usernameField = driver.findElement(By.name("username"));
+        WebElement passwordField = driver.findElement(By.name("password"));
+        usernameField.sendKeys("admin");
+        passwordField.sendKeys("password");
+        
+        WebElement login = driver.findElement(By.id("login"));
+        login.submit();
+        
+        WebElement delete = driver.findElement(By.id("delete"));
+        delete.click();
+        assertFalse(pageSource().contains("06.06.2016"));
+    }
+    @Test
+    public void cantRemoveExamIfNotLoggedIn() {
+        goTo(getUrl());
+        assertFalse(pageSource().contains("Poista"));
+    }
+    @Test
+    public void cantAddExamIfNotLoggedIn() {
+        goTo(getUrl());
+        assertFalse(pageSource().contains("Lisää koe"));
+    }
+    @Test
+    public void cantAddSameCourseExamToSameDate() {
+        goTo(getUrl());
+        WebDriver driver = getDefaultDriver();
+        
+        WebElement usernameField = driver.findElement(By.name("username"));
+        WebElement passwordField = driver.findElement(By.name("password"));
+        usernameField.sendKeys("admin");
+        passwordField.sendKeys("password");
+        
+        WebElement login = driver.findElement(By.id("login"));
+        login.submit();
+        
+        WebElement addExam = driver.findElement(By.id("addExam"));
+        addExam.click();
+        WebElement locationField = driver.findElement(By.name("location"));
+        WebElement examDateField = driver.findElement(By.name("examDate"));
+        locationField.sendKeys("A111");
+        examDateField.sendKeys("06.06.2016 10:00");
+        WebElement examinerField = driver.findElement(By.name("examiner"));
+        examinerField.sendKeys("Arto Vihavainen");
+        
+        WebElement addExamOk = driver.findElement(By.id("addExamOk"));
+        addExamOk.submit();
+        int size = driver.findElements(By.xpath("//*[text()='06.06.2016']")).size();
+        assertTrue(size < 2);
+    }
+            
 }
