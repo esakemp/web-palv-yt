@@ -17,6 +17,12 @@ public class CourseService {
     }
 
     public Course addCourse(Course course) {
+        for (Course kurssi : courseRepository.findAll()) {
+
+            if (kurssi.getName().equals(course.getName())) {
+                return course;
+            }
+        }
         return courseRepository.save(course);
     }
 }

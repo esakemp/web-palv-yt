@@ -17,7 +17,7 @@
                 <input type="text" name="username" />
                 <label for="password">Password:</label>
                 <input type="password" name="password" />
-                <input type="submit" value="login" />
+                <input type="submit" value="login" id="login"/>
 
             </form> 
 
@@ -33,7 +33,7 @@
 
         <div  th:fragment="addExam">
             <!-- 'lisää koe'- button -->
-            <input type="button" onclick="showInputForm();" value="lisää koe" sec:authorize="hasRole('ROLE_ADMIN')" />
+            <input type="button" onclick="showInputForm();" value="lisää koe" sec:authorize="hasRole('ROLE_ADMIN')" id="addExam"/>
         </div>
 
         <div th:fragment="addCourse" >
@@ -55,13 +55,13 @@
             <!-- Etsi päivämäärällä -->
             <form th:action="@{/exams/datesearch}" th:method="POST" th:object="${searchDates}">
                 <label for="start">Alku</label>
-                <input type="text" th:field="*{start}" size="17" />
+                <input type="text" th:field="*{start}" size="17" id="startDate"/>
                 <label for="end">Loppu</label>
-                <input type="text" th:field="*{end}" size="17" />
+                <input type="text" th:field="*{end}" size="17" id="endDate"/>
                 <span th:text="${#fields.hasErrors('*')}? 'Tarkista ajan muoto (dd.mm.yyyy)' : 'dd.mm.yyyy'">fail</span>
 
 
-                <input type="submit"  value="etsi" />
+                <input type="submit"  value="etsi" id="dateSearchButton"/>
                 <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
             </form>
         </div>
@@ -109,13 +109,13 @@
                 <!-- Kokeet -->
                 <span class="block">
                     <label for="location">Sijainti</label>
-                    <input type="text" th:field="*{location}" />
+                    <input type="text" th:field="*{location}" name="location"/>
                     <span th:if="${#fields.hasErrors('location')}" th:errors="*{location}"></span>
                 </span>
 
                 <span class="block">
                     <label for="date">Aika</label>
-                    <input type="text" th:field="*{examDate}" />
+                    <input type="text" th:field="*{examDate}" name="examDate"/>
                     <span th:text="${#fields.hasErrors('examDate')}? 
                           'Tarkista ajan muoto (dd.mm.yyyy hh:mm)' : 'dd.mm.yyyy hh:mm'">fail</span>
 
@@ -148,7 +148,7 @@
                 </span>
                 <span class="block">
                     <label for="submit">Lähetä</label>
-                    <input name="submit" type="submit" value="Ok" />
+                    <input name="submit" type="submit" value="Ok" id="addExamOk"/>
                 </span>
                 <span class="block">
                     <label></label>
@@ -187,7 +187,7 @@
                     <td><a href="#" th:href="@{/exams/{examid}(examid=${exam.id})}">Tiedot</a></td>
                     <td><form sec:authorize="hasRole('ROLE_ADMIN')" th:method="DELETE" th:action="@{/exams/{examid}(examid=${exam.id})}">
                             <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
-                            <input type="submit" value="Poista" />
+                            <input type="submit" value="Poista" id="delete"/>
                         </form>
                     </td>
                 </tr>

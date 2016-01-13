@@ -1,4 +1,3 @@
-
 package wad.domain;
 
 import java.util.List;
@@ -10,20 +9,17 @@ import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.data.jpa.domain.AbstractPersistable;
 import org.springframework.format.annotation.NumberFormat;
 
-
 @Entity
-public class Course  extends AbstractPersistable<Long>{
-    @Column(unique = true)
+public class Course extends AbstractPersistable<Long> {
+
     @NotBlank
     private String name;
-    
-    @Column(unique = true)
-    
+
     private String code;
-    
+
     @OneToMany(mappedBy = "course")
     private List<Exam> exams;
-    
+
     @NotNull
     private CourseType courseType;
 
@@ -34,8 +30,7 @@ public class Course  extends AbstractPersistable<Long>{
     public void setCourseType(CourseType courseType) {
         this.courseType = courseType;
     }
-    
-    
+
     public String getName() {
         return name;
     }
